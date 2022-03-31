@@ -15,7 +15,7 @@ class SocialCubit extends Cubit<SocialStates> {
 
     FirebaseFirestore.instance
         .collection('users')
-        .doc('8ZWuDAZPz1cLJI3haUDfsFBkEGr2')
+        .doc('CERCdzPYCFMyLugwNbJEPVzRtqr1')
         .get()
         .then((value) {
       print(value.data());

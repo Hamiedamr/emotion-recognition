@@ -28,11 +28,14 @@ class _AudioFeatureState extends State<AudioFeature> {
           )
         : AudioRecorder(
             onStop: (path) async {
+              print(path);
               var request = http.MultipartRequest(
-                  'POST', Uri.parse('http://192.168.1.13/MR/MR/upload.php'));
+                  'POST', Uri.parse('http://192.168.1.11/MR/MR/upload.php'));
               request.files
-                  .add(await http.MultipartFile.fromPath('picture', path));
+                  .add(await http.MultipartFile.fromPath('record', path));
+              print(request.toString());
               var res = await request.send();
+
               setState(() {
                 audioSource = ap.AudioSource.uri(Uri.parse(path));
                 showPlayer = true;

@@ -13,19 +13,20 @@ class AudioFeature extends StatefulWidget {
 
 class _AudioFeatureState extends State<AudioFeature> {
   bool showPlayer = false;
+  String result='not yet';
   ap.AudioSource? audioSource;
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return
       showPlayer
           ? Padding(
               padding: EdgeInsets.symmetric(horizontal: 25),
-              child: AudioPlayer(
+              child: Column(children: [Text(result),AudioPlayer(
                 source: audioSource!,
                 onDelete: () {
                   setState(() => showPlayer = false);
                 },
-              ),
+              )],mainAxisSize: MainAxisSize.min,),
             )
           : AudioRecorder(
               onStop: (path) async {
@@ -34,13 +35,15 @@ class _AudioFeatureState extends State<AudioFeature> {
                 request.files
                     .add(await http.MultipartFile.fromPath('record', path));
                 var res = await request.send();
-                res.stream.bytesToString().then((value) => print(value));
+                res.stream.bytesToString().then((value) => setState(() {
+                  result=value;
+                }) );
                 setState(() {
                   audioSource = ap.AudioSource.uri(Uri.parse(path));
                   showPlayer = true;
                 });
               },
-            )
-    ], mainAxisSize: MainAxisSize.min,);
+            );
+
   }
 }
